@@ -35,7 +35,7 @@ public:
   bool try_pop(T& value)
   {
     std::unique_ptr<node> const old_head = try_pop_head(value);
-    return old_head;
+    return (bool)old_head;
   }
 
   std::shared_ptr<T> wait_and_pop()
@@ -57,7 +57,7 @@ public:
             )
           );
     
-    std::unique_lock<node> p(new node);
+    std::unique_ptr<node> p(new node);
 
     {
       std::lock_guard<std::mutex> tail_lock(tail_mutex);
@@ -95,7 +95,7 @@ private:
     data_cond.wait(head_lock, [&]
                 {
                   return head.get() != get_tail();
-                })
+                });
     
     return std::move(head_lock);
   }
@@ -109,7 +109,7 @@ private:
   std::unique_ptr<node> wait_pop_head(T& value)
   {
     std::unique_lock<std::mutex> head_lock(wait_for_data());
-    value = std::move(*head->data)
+    value = std::move(*head->data);
     return pop_head();
   }
 
