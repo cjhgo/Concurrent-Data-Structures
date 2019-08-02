@@ -5,6 +5,6 @@
 
 ### 参考资料
 
-A C++ library of Concurrent Data Structures
+A C++ library of Concurrent Data Structures\
 https://github.com/khizmax/libcds
 
